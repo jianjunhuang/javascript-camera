@@ -6,6 +6,22 @@
     alert("Camera API is not available in your browser");
     return;
   }
+  
+  if (!navigator.mediaDevices?.enumerateDevices) {
+    console.log("enumerateDevices() not supported.");
+  } else {
+    // List cameras and microphones.
+    navigator.mediaDevices.enumerateDevices()
+      .then((devices) => {
+        devices.forEach((device) => {
+          console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+        });
+      })
+      .catch((err) => {
+        console.error(`${err.name}: ${err.message}`);
+      });
+  }
+
 
   // get page elements
   const video = document.querySelector("#video");
