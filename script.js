@@ -7,6 +7,20 @@
     return;
   }
   
+  if (!navigator.mediaDevices?.enumerateDevices) {
+    console.log("enumerateDevices() not supported.");
+  } else {
+    // List cameras and microphones.
+    navigator.mediaDevices.enumerateDevices()
+      .then((devices) => {
+        devices.forEach((device) => {
+          console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+        });
+      })
+      .catch((err) => {
+        console.error(`${err.name}: ${err.message}`);
+      });
+  }
 
 
   // get page elements
@@ -90,20 +104,6 @@
     try {
       videoStream = await navigator.mediaDevices.getUserMedia(constraints);
       video.srcObject = videoStream;
-      if (!navigator.mediaDevices?.enumerateDevices) {
-        console.log("enumerateDevices() not supported.");
-      } else {
-        // List cameras and microphones.
-        navigator.mediaDevices.enumerateDevices()
-          .then((devices) => {
-            devices.forEach((device) => {
-              console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
-            });
-          })
-          .catch((err) => {
-            console.error(`${err.name}: ${err.message}`);
-          });
-      }
     } catch (err) {
       alert("Could not access the camera");
     }
